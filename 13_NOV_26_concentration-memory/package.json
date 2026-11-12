@@ -1,0 +1,16 @@
+{
+  "name": "naif-concentration-memory",
+  "version": "1.0.0",
+  "description": "a little game of concentration/memory using web sockets for two players",
+  "license": "ISC",
+  "author": "Dallas Gale",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.22.3",
+    "socket.io": "^4.8.4"
+  }
+}
