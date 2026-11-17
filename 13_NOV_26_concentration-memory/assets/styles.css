@@ -11,7 +11,7 @@ body {
 
 .card {
   border: 1px solid white;
-  height: auto;
+  height: 25dvw;
   width: 100%;
   background-color: rgb(228, 228, 228);
   box-sizing: border-box;
@@ -25,11 +25,26 @@ body {
   align-items: center;
   justify-content: center;
   height: 100%;
+  width: 100%;
+}
+
+#players li {
+  list-style: none;
 }
 
 .hidden {
   opacity: 0;
 }
-.visible {
+[data-selected="true"] img {
   opacity: 1;
+}
+
+[data-current="true"] {
+  opacity: 1;
+  &:before {
+    content: "👉";
+  }
+}
+[data-current="false"] {
+  opacity: 0.5;
 }

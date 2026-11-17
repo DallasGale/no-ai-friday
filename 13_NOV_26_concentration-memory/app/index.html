@@ -9,43 +9,62 @@
 </head>
 
 <body>
-
-  <div>Clicked card: <span id="clicked-card">Hello</span></div>
+  <!-- Boilerplate UI -->
+  <form id="form" action="">
+    <input id="input" autocomplete="off" placeholder="Your name" /><button>Send</button>
+  </form>
+  <ul id="players">Players</ul>
+  <button id="start-game" disabled>START</button>
   <div id="cards-parent" class="cards-parent">
-    <!-- <div class="card" id="1"></div>
-    <div class="card" id="2"></div>
-    <div class="card" id="3"></div>
-    <div class="card" id="4"></div>
-    <div class="card" id="5"></div>
-    <div class="card" id="6"></div>
-    <div class="card" id="7"></div>
-    <div class="card" id="8"></div>
-    <div class="card" id="9"></div>
-    <div class="card" id="10"></div>
-    <div class="card" id="11"></div>
-    <div class="card" id="12"></div>
-    <div class="card" id="13"></div>
-    <div class="card" id="14"></div>
-    <div class="card" id="15"></div>
-    <div class="card" id="16"></div>
-    <div class="card" id="17"></div>
-    <div class="card" id="18"></div>
-    <div class="card" id="19"></div>
-    <div class="card" id="20"></div> -->
   </div>
 
-
-  <!-- Boilerplate UI -->
-  <ul id="messages"></ul>
-  <form id="form" action="">
-    <input id="input" autocomplete="off" /><button>Send</button>
-  </form>
+  <!-- <script src="/js/index.module.js" type="module"></script> -->
+  <!-- <script src="/js/data.js"></script> -->
   <script src="/socket.io/socket.io.js"></script>
   <!-- <script src="https://cdn.socket.io/4.8.4/socket.io.min.js"></script> -->
-  <script>
+  <script type="module">
+    import cardData from "/js/data.module.js"
+    import init from "/js/index.module.js"
+
+    init
+
     const socket = io();
+    const form = document.getElementById('form')
+    const input = document.getElementById('input')
+    const players = document.getElementById("players")
+
+    let id = 0
+
+
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault()
+      if (input.value) {
+        socket.emit("user name", input.value)
+        input.value = ''
+      }
+    });
+    socket.on("user name", (user) => {
+      console.log("found a user", { user, socket })
+      const item = document.createElement("li");
+      id += 1
+      item.id = id
+      item.dataset.current = id === 1 ? true : false
+      // item.id = socket.id
+      item.innerHTML = `Player ${id} is ${user}. Points <span class="player" id="player-${id}-points">0</span>`
+      players.appendChild(item)
+
+      if (window) {
+        console.log("setting storage", user, socket.id, { id })
+        // console.log(`{ "id": "${socket.id}", "name": "${user}" }`)
+        window.localStorage.setItem(`player-${id}`,
+          `{ "id": "${socket.id}", "name": "${user}" }`,
+        )
+      }
+
+    })
+
   </script>
-  <script src="/js/index.js" type="module"></script>
 </body>
 
 </html>
